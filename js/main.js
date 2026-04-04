@@ -1,63 +1,101 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('nav a').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        target.scrollIntoView({
-            behavior: 'smooth'
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    const scrollProgress = document.getElementById('scrollProgress');
+    const faqItems = document.querySelectorAll('.faq-item');
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+
+    hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
         });
-        // Close mobile menu after clicking
-        document.getElementById('nav-menu').classList.remove('active');
-        document.getElementById('hamburger').classList.remove('active');
     });
-});
 
-// Hamburger menu toggle
-document.getElementById('hamburger').addEventListener('click', function() {
-    this.classList.toggle('active');
-    document.getElementById('nav-menu').classList.toggle('active');
-});
-
-// Fade in animation on scroll
-const observerOptions = {
-    threshold: 0.1
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        scrollProgress.style.width = scrollPercent + '%';
     });
-}, observerOptions);
 
-document.querySelectorAll('section > .container').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(30px)';
-    section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-    observer.observe(section);
-});
-
-// Form submission (placeholder)
-document.querySelector('form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
-});
-
-// FAQ accordion toggle
-const faqButtons = document.querySelectorAll('.faq-question');
-faqButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const item = button.closest('.faq-item');
-        const open = item.classList.contains('open');
-
-        document.querySelectorAll('.faq-item.open').forEach(openItem => {
-            openItem.classList.remove('open');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            const isOpen = item.classList.contains('open');
+            
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove('open');
+            });
+            
+            if (!isOpen) {
+                item.classList.add('open');
+            }
         });
-
-        if (!open) {
-            item.classList.add('open');
-        }
     });
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.form-submit');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                submitBtn.textContent = 'Message Sent!';
+                submitBtn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+                
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                    this.reset();
+                }, 2000);
+            }, 1500);
+        });
+    }
 });
