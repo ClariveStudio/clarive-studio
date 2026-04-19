@@ -880,7 +880,11 @@ import Layout from '../layouts/Layout.astro';
   }
 
   function toggleFAQ(e) {
-    const faqItem = e.target.closest('.faq-item');
+    const button = e.target.closest('.faq-question');
+    if (!button) return;
+    const faqItem = button.parentElement;
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', !isExpanded);
     faqItem.classList.toggle('active');
   }
 
