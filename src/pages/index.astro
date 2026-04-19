@@ -9,7 +9,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="container">
       <nav>
         <a href="#" class="logo">
-          <img src="/assets/images/logo.png" alt="Clarive Studio" class="logo-img">
+          <img src="/assets/images/logo.png" alt="Clarive Studio" class="logo-img" loading="lazy">
           <span>Clarive Studio</span>
         </a>
         <ul class="nav-menu" id="nav-menu">
@@ -637,51 +637,85 @@ import Layout from '../layouts/Layout.astro';
             Everything you need to know about working with us.
           </p>
         </div>
-        <div class="faq-grid">
-          <div class="faq-card animate-on-scroll">
-            <div class="faq-question">Do I need to write any of the content myself?</div>
-            <div class="faq-answer">No. Not a single word. We handle all copy — every headline, every paragraph, every CTA. You review and approve; we execute. Our process starts with understanding your business and customers, so the copy writes itself.</div>
+        <div class="faq-list">
+          <div class="faq-item animate-on-scroll">
+            <button class="faq-question" aria-expanded="false">
+              Do I need to write any of the content myself?
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <p>No. Not a single word. We handle all copy — every headline, every paragraph, every CTA. You review and approve; we execute. Our process starts with understanding your business and customers, so the copy writes itself.</p>
+            </div>
           </div>
-          <div class="faq-card animate-on-scroll delay-1">
-            <div class="faq-question">How is this different from just hiring a web designer?</div>
-            <div class="faq-answer">Designers commonly hand you a template and ask you to fill in content. We are designers who also write — copy and design together, around your customer. We start with strategy and copy, then build the design around what actually converts.</div>
+          <div class="faq-item animate-on-scroll delay-1">
+            <button class="faq-question" aria-expanded="false">
+              How is this different from just hiring a web designer?
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <p>Designers commonly hand you a template and ask you to fill in content. We are designers who also write — copy and design together, around your customer. We start with strategy and copy, then build the design around what actually converts.</p>
+            </div>
           </div>
-          <div class="faq-card animate-on-scroll delay-2">
-            <div class="faq-question">What if I already have a website? Can you just rewrite the copy?</div>
-            <div class="faq-answer">Yes. We offer standalone copywriting for existing sites. We can rewrite your copy using real customer research and work with your current designer, or update it directly if you have access.</div>
+          <div class="faq-item animate-on-scroll delay-2">
+            <button class="faq-question" aria-expanded="false">
+              What if I already have a website? Can you just rewrite the copy?
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. We offer standalone copywriting for existing sites. We can rewrite your copy using real customer research and work with your current designer, or update it directly if you have access.</p>
+            </div>
           </div>
-          <div class="faq-card animate-on-scroll delay-3">
-            <div class="faq-question">How long does it take?</div>
-            <div class="faq-answer">Clarity (4 pages): 7-10 business days. Conversion (7 pages): 14-18 business days. Growth (10 pages + SEO): 21-28 business days. We stick to our timelines — no endless revisions or scope creep.</div>
+          <div class="faq-item animate-on-scroll delay-3">
+            <button class="faq-question" aria-expanded="false">
+              How long does it take?
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <p>Clarity (4 pages): 7-10 business days. Conversion (7 pages): 14-18 business days. Growth (10 pages + SEO): 21-28 business days. We stick to our timelines — no endless revisions or scope creep.</p>
+            </div>
           </div>
-          <div class="faq-card animate-on-scroll delay-1">
-            <div class="faq-question">What do you need from me to get started?</div>
-            <div class="faq-answer">After deposit, we send a short onboarding form about your customers, goals, and current challenges, then schedule a kick-off call. Then we handle the rest — you focus on your business.</div>
-          </div>
-          <div class="faq-card animate-on-scroll delay-2">
-            <div class="faq-question">Do you work with clients outside your local area?</div>
-            <div class="faq-answer">Yes. We work globally — India, UK, US, Australia, and beyond. Communication is via email and video calls, and we manage time zone differences professionally.</div>
-          </div>
-          <div class="faq-card animate-on-scroll delay-3">
-            <div class="faq-question">What happens after the site launches?</div>
-            <div class="faq-answer">We include post-launch support for small fixes. For ongoing needs, we offer optional monthly retainers for copy updates, SEO checks, and performance reviews to keep your site working hard.</div>
-          </div>
+          <div class="faq-item animate-on-scroll delay-1">
+            <button class="faq-question" aria-expanded="false">
+              What do you need from me to get started?
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
             <div class="faq-answer">
               <p>After deposit, we send a short onboarding form about your customers, goals, and current challenges, then schedule a kick-off call. Then we handle the rest — you focus on your business.</p>
             </div>
           </div>
           <div class="faq-item animate-on-scroll delay-2">
-            <button class="faq-question" type="button">
+            <button class="faq-question" aria-expanded="false">
               Do you work with clients outside your local area?
               <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
             </button>
             <div class="faq-answer">
               <p>Yes. We work globally — India, UK, US, Australia, and beyond. Communication is via email and video calls, and we manage time zone differences professionally.</p>
             </div>
           </div>
+          <div class="faq-item animate-on-scroll delay-3">
+            <button class="faq-question" aria-expanded="false">
+              What happens after the site launches?
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <p>We include post-launch support for small fixes. For ongoing needs, we offer optional monthly retainers for copy updates, SEO checks, and performance reviews to keep your site working hard.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
