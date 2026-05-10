@@ -1,0 +1,346 @@
+---
+interface BlogPost {
+  title: string;
+  permalink: string;
+  pubDate: Date;
+  category: string;
+  description: string;
+}
+
+interface Props {
+  relatedPosts: BlogPost[];
+  latestPosts: BlogPost[];
+}
+
+const { relatedPosts, latestPosts } = Astro.props;
+
+const formattedDate = (date: Date) => new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+}).format(date);
+---
+
+<aside class="article-sidebar">
+  {relatedPosts.length > 0 && (
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        Related Articles
+      </h3>
+      <ul class="related-posts-list">
+        {relatedPosts.map((post) => (
+          <li class="related-post-item">
+            <a href={`/blog/${post.permalink}`} class="related-post-link">
+              <span class="related-post-category">{post.category}</span>
+              <span class="related-post-title">{post.title}</span>
+              <time class="related-post-date" datetime={post.pubDate.toISOString()}>
+                {formattedDate(post.pubDate)}
+              </time>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <div class="sidebar-section">
+    <h3 class="sidebar-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      Latest Articles
+    </h3>
+    <ul class="related-posts-list">
+      {latestPosts.map((post) => (
+        <li class="related-post-item">
+          <a href={`/blog/${post.permalink}`} class="related-post-link">
+            <span class="related-post-category">{post.category}</span>
+            <span class="related-post-title">{post.title}</span>
+            <time class="related-post-date" datetime={post.pubDate.toISOString()}>
+              {formattedDate(post.pubDate)}
+            </time>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="sidebar-cta">
+    <div class="cta-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+    </div>
+    <h3>Ready to Own Your Leads?</h3>
+    <p>Stop competing for shared leads. Build a website that attracts your dream clients.</p>
+    <a href="/#contact" class="sidebar-cta-button">
+      Let's Talk
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="sidebar-newsletter">
+    <h3>Get Business Insights</h3>
+    <p>Weekly tips on lead generation, marketing, and building a business that works for you.</p>
+    <form class="newsletter-form" id="newsletter-form">
+      <input type="email" placeholder="Your email address" required />
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="newsletter-note">No spam, unsubscribe anytime.</p>
+  </div>
+</aside>
+
+<style>
+  .article-sidebar {
+    position: sticky;
+    top: 100px;
+  }
+
+  .sidebar-section {
+    background: var(--card-bg, #fff);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .sidebar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    margin: 0 0 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border-color, #e5e7eb);
+  }
+
+  .sidebar-title svg {
+    color: var(--primary, #6366f1);
+  }
+
+  .related-posts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .related-post-item {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+  }
+
+  .related-post-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .related-post-link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+
+  .related-post-link:hover {
+    transform: translateX(4px);
+  }
+
+  .related-post-category {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--primary, #6366f1);
+  }
+
+  .related-post-title {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary, #1f2937);
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+
+  .related-post-link:hover .related-post-title {
+    color: var(--primary, #6366f1);
+  }
+
+  .related-post-date {
+    font-size: 0.75rem;
+    color: var(--text-muted, #9ca3af);
+  }
+
+  .sidebar-cta {
+    background: linear-gradient(135deg, var(--primary, #6366f1) 0%, #4f46e5 100%);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    color: white;
+    margin-bottom: 24px;
+  }
+
+  .cta-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+
+  .sidebar-cta h3 {
+    font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+
+  .sidebar-cta p {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    margin: 0 0 24px;
+  }
+
+  .sidebar-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: var(--primary, #6366f1);
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .sidebar-cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar-cta-button svg {
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar-cta-button:hover svg {
+    transform: translateX(4px);
+  }
+
+  .sidebar-newsletter {
+    background: var(--card-bg, #fff);
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    text-align: center;
+  }
+
+  .sidebar-newsletter h3 {
+    font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    margin: 0 0 10px;
+  }
+
+  .sidebar-newsletter p {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #6b7280);
+    line-height: 1.5;
+    margin: 0 0 20px;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .newsletter-form input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border-color, #e5e7eb);
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    background: var(--bg-secondary, #f9fafb);
+    color: var(--text-primary, #1f2937);
+    transition: border-color 0.2s ease;
+  }
+
+  .newsletter-form input:focus {
+    outline: none;
+    border-color: var(--primary, #6366f1);
+  }
+
+  .newsletter-form button {
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--primary, #6366f1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .newsletter-form button:hover {
+    background: var(--primary-dark, #4f46e5);
+    transform: translateY(-1px);
+  }
+
+  .newsletter-note {
+    font-size: 0.75rem !important;
+    color: var(--text-muted, #9ca3af) !important;
+    margin-top: 12px !important;
+  }
+
+  @media (max-width: 1024px) {
+    .article-sidebar {
+      position: static;
+    }
+  }
+</style>
+
+<script>
+  const newsletterForm = document.getElementById('newsletter-form') as HTMLFormElement;
+  
+  newsletterForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('email');
+    
+    const button = newsletterForm.querySelector('button');
+    if (button) {
+      button.textContent = 'Subscribed!';
+      button.style.background = '#10b981';
+    }
+    
+    setTimeout(() => {
+      newsletterForm.reset();
+      if (button) {
+        button.textContent = 'Subscribe';
+        button.style.background = '';
+      }
+    }, 3000);
+  });
+</script>

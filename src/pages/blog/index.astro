@@ -1,0 +1,449 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import BlogSidebar from '../../components/blog/BlogSidebar.astro';
+
+const allPosts = await getCollection('blogs');
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = ['Business Growth', 'Marketing', 'Web Design'].map(cat => ({
+  name: cat,
+  count: posts.filter(p => p.data.category === cat).length
+})).filter(cat => cat.count > 0);
+
+const recentPosts = posts.slice(0, 5).map(post => ({
+  title: post.data.title,
+  permalink: post.data.permalink,
+  pubDate: post.data.pubDate,
+  category: post.data.category
+}));
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<Layout
+  title="Blog — Clarive Studio"
+  description="Insights on lead generation, business growth, and marketing strategies. Learn how to build a business that works for you."
+  canonicalUrl={canonicalURL.toString()}
+>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">
+          <img src="/assets/images/logo.png" alt="Clarive Studio" class="logo-img" loading="eager">
+        </a>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#portfolio">Work</a></li>
+          <li><a href="/#process">Process</a></li>
+          <li><a href="/#pricing">Pricing</a></li>
+          <li><a href="/blog" class="active">Blog</a></li>
+        </ul>
+        <a href="/#contact" class="nav-cta">
+          Book a Call
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="blog-page">
+    <section class="blog-hero">
+      <div class="container">
+        <div class="blog-hero-content">
+          <span class="blog-hero-label">Our Blog</span>
+          <h1 class="blog-hero-title">Insights for Business Owners</h1>
+          <p class="blog-hero-description">
+            Practical advice on lead generation, marketing, and building a business that brings you clients — not the other way around.
+          </p>
+        </div>
+      </div>
+      <div class="blog-hero-pattern"></div>
+    </section>
+
+    <section class="blog-content">
+      <div class="container">
+        <div class="blog-layout">
+          <div class="blog-main">
+            <div class="blog-grid">
+              {posts.map((post) => (
+                <BlogCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  pubDate={post.data.pubDate}
+                  category={post.data.category}
+                  image={post.data.image.src}
+                  imageAlt={post.data.imageAlt}
+                  permalink={post.data.permalink}
+                  featured={post.data.featured}
+                />
+              ))}
+            </div>
+          </div>
+          <div class="blog-sidebar-wrapper">
+            <BlogSidebar categories={categories} recentPosts={recentPosts} />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <img src="/assets/images/logo.png" alt="Clarive Studio" class="footer-logo">
+            <p>Design, copy, and strategy synced for conversions. We build focused websites for business owners who want real results.</p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>Services</h4>
+              <ul>
+                <li><a href="/#services">Website Design</a></li>
+                <li><a href="/#services">Copywriting</a></li>
+                <li><a href="/#services">Landing Pages</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>Resources</h4>
+              <ul>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/#portfolio">Work</a></li>
+                <li><a href="/#contact">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Clarive Studio. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    gap: 32px;
+  }
+
+  .logo-img {
+    height: 40px;
+    width: auto;
+  }
+
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 8px;
+  }
+
+  .nav-menu a {
+    color: var(--text-secondary, #4b5563);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .nav-menu a:hover,
+  .nav-menu a.active {
+    color: var(--primary, #6366f1);
+    background: rgba(99, 102, 241, 0.08);
+  }
+
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary, #6366f1);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .nav-cta:hover {
+    background: var(--primary-dark, #4f46e5);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .hamburger span {
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary, #1f2937);
+    border-radius: 2px;
+  }
+
+  .blog-page {
+    padding-top: 72px;
+  }
+
+  .blog-hero {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .blog-hero-content {
+    max-width: 680px;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .blog-hero-label {
+    display: inline-block;
+    background: var(--primary, #6366f1);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .blog-hero-title {
+    font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--text-primary, #1f2937);
+    margin: 0 0 20px;
+    line-height: 1.2;
+  }
+
+  .blog-hero-description {
+    font-size: 1.125rem;
+    color: var(--text-secondary, #4b5563);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .blog-content {
+    padding: 60px 0 100px;
+  }
+
+  .blog-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .blog-grid {
+    display: grid;
+    gap: 32px;
+  }
+
+  .blog-sidebar-wrapper {
+    min-width: 0;
+  }
+
+  footer {
+    background: var(--text-primary, #1f2937);
+    color: white;
+    padding: 60px 0 30px;
+  }
+
+  .footer-brand {
+    max-width: 320px;
+  }
+
+  .footer-brand p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 16px 0 24px;
+  }
+
+  .footer-logo {
+    height: 36px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  .footer-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+    margin-bottom: 48px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 80px;
+  }
+
+  .footer-column h4 {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 20px;
+  }
+
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-column li {
+    margin-bottom: 12px;
+  }
+
+  .footer-column a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: color 0.2s ease;
+  }
+
+  .footer-column a:hover {
+    color: white;
+  }
+
+  .footer-bottom {
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+  }
+
+  .footer-bottom p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .blog-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .blog-sidebar-wrapper {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      flex-direction: column;
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color, #e5e7eb);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-menu.active {
+      display: flex;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    .nav-cta {
+      display: none;
+    }
+
+    .blog-hero {
+      padding: 60px 0;
+    }
+
+    .blog-content {
+      padding: 40px 0 60px;
+    }
+
+    .footer-main {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .footer-links {
+      gap: 40px;
+    }
+  }
+</style>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('nav-menu');
+
+  hamburger?.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu?.classList.toggle('active');
+  });
+
+  document.querySelectorAll('.nav-menu a').forEach(anchor => {
+    anchor.addEventListener('click', () => {
+      if (navMenu?.classList.contains('active')) {
+        hamburger?.classList.remove('active');
+        navMenu.classList.remove('active');
+      }
+    });
+  });
+</script>
