@@ -82,14 +82,7 @@ a:hover { color: var(--secondary-color); }
 }
 
 header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: var(--primary-color);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--light-color);
 }
 
 nav {
@@ -134,18 +127,18 @@ nav {
 
 .nav-menu a {
   font-weight: 500;
-  color: white;
+  color: var(--secondary-color);
 }
 
-.nav-menu a:hover { color: rgba(255, 255, 255, 0.8); }
+.nav-menu a:hover, .nav-menu a.active { color: var(--primary-color); }
 
 .nav-cta {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: white;
-  color: var(--primary-color) !important;
+  background-color: var(--primary-color);
+  color: white !important;
   border-radius: var(--border-radius);
   font-weight: 500;
 }
@@ -167,7 +160,7 @@ nav {
   display: block;
   width: 24px;
   height: 2px;
-  background-color: white;
+  background-color: var(--secondary-color);
   margin: 4px 0;
   transition: var(--transition);
 }
